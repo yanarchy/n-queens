@@ -46,66 +46,65 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
 
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
   var board = new Board({n: n});
-  var solution = [];
-  var size = board.get('n');
-  var count = 0;
+  var size = 0;
 
 
-  for(var row = 0; row < size; row++){
-    for(var col = 0; col < size; col++){
-      board.get(row)[col] = 1;
-      count++;
-      if(board.hasRowConflictAt(row) || board.hasColConflictAt(col)){
-        board.get(row)[col] = 0;
-        count--;
-      }
+var recurse = function (col, row, boardInstance){
+  if (col === n && row === n){
+    if (boardInstance.hasAnyColConflicts() || boardInstance.hasAnyRowConflicts()){
+      solutionCount++;
     }
+    return;
+
   }
-  if(count===n){
-    for(var i = 0; i<size; i++){
-      solution.push(board.get(i));
-    }
-  }else {
-    solution.push([]);
+
+  for (row; row < n; row++){
+    boardInstance.get(row)[col] = 1;
+    recurse(col++,row ,boardInstance);
   }
+}
+recurse(0, 0, board);
+
+
+
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  return soultionCount;
   //console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+
 };
 
 
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var board = new Board({n: n});
-  var solution = [];
-  var size = board.get('n');
-  var count = 0;
+  // var board = new Board({n: n});
+  // var solution = [];
+  // var size = board.get('n');
+  // var count = 0;
 
-  for(var row = 0; row < size; row++){
-    for(var col = 0; col < size; col++){
-      board.get(row)[col] = 1;
-      count++;
-      if(board.hasRowConflictAt(row) || board.hasColConflictAt(col) || board.hasMajorDiagonalConflictAt(col) || board.hasMinorDiagonalConflictAt(col)){
-        board.get(row)[col] = 0;
-        count--;
-      }
-    }
-  }
-  if(count===n){
-    for(var i = 0; i<size; i++){
-      solution.push(board.get(i));
-    }
-  }else {
-    solution.push([]);
-  }
+  // for(var row = 0; row < size; row++){
+  //   for(var col = 0; col < size; col++){
+  //     board.get(row)[col] = 1;
+  //     count++;
+  //     if(board.hasRowConflictAt(row) || board.hasColConflictAt(col) || board.hasMajorDiagonalConflictAt(col) || board.hasMinorDiagonalConflictAt(col)){
+  //       board.get(row)[col] = 0;
+  //       count--;
+  //     }
+  //   }
+  // }
+  // if(count===n){
+  //   for(var i = 0; i<size; i++){
+  //     solution.push(board.get(i));
+  //   }
+  // }else {
+  //   solution.push([]);
+  // }
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  // console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  // return solution;
 };
 
 
