@@ -48,30 +48,32 @@ window.countNRooksSolutions = function(n) {
 
   var solutionCount = 0;
   var board = new Board({n: n});
-  var size = 0;
+  var rooks = 0;
 
-
-var recurse = function (col, row, boardInstance){
-  if (col === n && row === n){
-    if (boardInstance.hasAnyColConflicts() || boardInstance.hasAnyRowConflicts()){
+  var recurse = function (numOfRooks, boardInstance){
+    if (numOfRooks === n){
       solutionCount++;
+      return;
     }
+    for(var col = 0; col < n; col++){
+      boardInstance.get(numOfRooks)[col] = 1;
+      if(!boardInstance.hasRowConflictAt(numOfRooks) || !boardInstance.hasColConflictAt(col)){
+        recurse(numOfRooks++, boardInstance);
+        boardInstance.get(numOfRooks)[col] = 0;
+      } else {
+        boardInstance.get(numOfRooks)[col] = 0;
+      }
     return;
-
+    }
+    //recurse(numOfRooks++, boardInstance);
   }
-
-  for (row; row < n; row++){
-    boardInstance.get(row)[col] = 1;
-    recurse(col++,row ,boardInstance);
-  }
-}
-recurse(0, 0, board);
+  recurse(rooks, board);
 
 
 
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return soultionCount;
+  return solutionCount;
   //console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
 
 };
